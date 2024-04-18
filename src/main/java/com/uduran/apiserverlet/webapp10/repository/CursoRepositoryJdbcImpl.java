@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CursoRepositoryJdbcImpl implements Repository<Curso>{
+
     private Connection conn;
 
     public CursoRepositoryJdbcImpl(Connection conn) {
@@ -29,7 +30,7 @@ public class CursoRepositoryJdbcImpl implements Repository<Curso>{
     @Override
     public Optional<Curso> porId(Long id) throws SQLException {
         Optional<Curso> curso = null;
-        try (PreparedStatement stmt = conn.prepareStatement("SELECT c.* FROM cursos WHERE c.id=?")){
+        try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cursos WHERE id=?")){
             stmt.setLong(1, id);
             try (ResultSet rs = stmt.executeQuery()){
                 if (rs.next()){
@@ -40,9 +41,9 @@ public class CursoRepositoryJdbcImpl implements Repository<Curso>{
         return curso;
     }
 
-    public Optional<Curso> buscarCurso(String nombre) throws SQLException{
-        Optional<Curso> curso = null;
-        try(PreparedStatement stmt = conn.prepareStatement("SELECT c.* FROM cursos where c.nombre like=?")){
+    public Optional<Curso> buscar(String nombre) throws SQLException{
+        Optional<Curso> curso = Optional.empty();
+        try(PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cursos where nombre like?")){
             stmt.setString(2, "%" + nombre + "%");
             try(ResultSet rs = stmt.executeQuery()){
                 if (rs.next()){
@@ -63,10 +64,12 @@ public class CursoRepositoryJdbcImpl implements Repository<Curso>{
 
     private static Curso getCurso(ResultSet rs) throws SQLException {
         Curso c = new Curso();
-        c.setCurso(rs.getString("nombre"));
+        c.setId(rs.getLong("id"));
+        c.setNombre(rs.getString("nombre"));
         c.setDescripcion(rs.getString("descripcion"));
         c.setInstructor(rs.getString("instructor"));
         c.setDuracion(rs.getDouble("duracion"));
+        c.setPrecio(rs.getDouble("precio"));
         return c;
     }
 }

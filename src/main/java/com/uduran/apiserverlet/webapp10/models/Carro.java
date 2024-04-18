@@ -3,8 +3,10 @@ package com.uduran.apiserverlet.webapp10.models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class Carro {
+    private Logger logger = Logger.getLogger(Carro.class.getName());
     List<ItemCarro> items;
 
     public Carro() {
@@ -29,27 +31,38 @@ public class Carro {
         return items;
     }
 
-    public int getTotal(){
-        return items.stream().mapToInt(ItemCarro::getImporte).sum();
+    public Double getTotal(){
+        return (double) Math.round((((items.stream().mapToDouble(ItemCarro::getImporte).sum()) * 100.0) / 100.0));
     }
 
-    public void removeProductos(List<String> productoIds){
-        if (productoIds != null){
-            productoIds.forEach(this::removeProducto);
+    public void removeItems(List<String> itemsIds){
+        if (itemsIds != null){
+            itemsIds.forEach(this::removeItem);
         }
     }
 
-    public void removeProducto(String productoId){
-        Optional<ItemCarro> producto = findProducto(productoId);
-        producto.ifPresent(itemCarro -> items.remove(itemCarro));
+    public void removeItem(String itemNombre){
+        Optional<ItemCarro> item = findItem(itemNombre);
+        logger.info(String.valueOf(item.isPresent()));
+        logger.info(String.valueOf(items.size()));
+        item.ifPresent(itemCarro -> items.remove(itemCarro));
     }
 
-    public void updateCantidad(String  productoId, int cantidad){
-        Optional<ItemCarro> producto = findProducto(productoId);
-        producto.ifPresent(itemCarro -> itemCarro.setCantidad(cantidad));
+    public void updateCantidad(String  itemNombre, int cantidad){
+        Optional<ItemCarro> item = findItem(itemNombre);
+        item.ifPresent(itemCarro -> itemCarro.setCantidad(cantidad));
     }
 
-    private Optional<ItemCarro> findProducto(String productoId){
-        return items.stream().filter(itemCarro -> productoId.equals(Long.toString(itemCarro.getProducto().getId()))).findAny();
+    private Optional<ItemCarro> findItem(String itemNombre){
+        return items.stream()
+                .filter(item -> {
+                    if (item.getCurso() != null){
+                        return item.getCurso().getNombre().equals(itemNombre);
+                    } else if (item.getProducto() != null){
+                        return item.getProducto().getNombre().equals(itemNombre);
+                    }
+                    return false;
+                })
+                .findFirst();
     }
 }

@@ -6,17 +6,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductoServiceImpl implements ProductoService{
+public class ProductoServiceImpl implements ItemService<Producto> {
     @Override
     public List<Producto> listar() {
-        return Arrays.asList(new Producto(1L, "notebook", "computacion", 150),
-                new Producto(2L, "mesa ordenador", "mueble", 200),
-                new Producto(3L, "Teclado mecanico", "computacion", 100));
+        return Arrays.asList(new Producto(1L, "notebook", "computacion", 150.0),
+                new Producto(2L, "mesa ordenador", "mueble", 200.0),
+                new Producto(3L, "Teclado mecanico", "computacion", 100.0));
     }
 
     @Override
-    public Optional<Producto> buscarProducto(String nombre) {
-        ProductoService service = new ProductoServiceImpl();
+    public Optional<Producto> buscar(String nombre) {
+        ItemService<Producto> service = new ProductoServiceImpl();
         return service.listar().stream().filter(p -> {
             if (nombre.isBlank() || nombre==null){
                 return false;

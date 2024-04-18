@@ -2,24 +2,28 @@ package com.uduran.apiserverlet.webapp10.models;
 
 public class Curso {
     private Long id;
-    private String curso;
+    private String nombre;
     private String descripcion;
     private String instructor;
     private double duracion;
+    private double precio;
 
     public Curso() {
     }
 
-    public Curso(Long id, String curso, String descripcion, String instructor, double duracion) {
+    public Curso(Long id, String nombre, String descripcion, String instructor, double duracion, double precio) {
         this.id = id;
-        this.curso = curso;
+        this.nombre = nombre;
         this.descripcion = descripcion;
         this.instructor = instructor;
         this.duracion = duracion;
+        this.precio = precio;
     }
 
-    public void setCurso(String curso) {
-        this.curso = curso;
+    public void setId(Long id){this.id = id;}
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public void setDescripcion(String descripcion) {
@@ -38,8 +42,8 @@ public class Curso {
         return id;
     }
 
-    public String getCurso() {
-        return curso;
+    public String getNombre() {
+        return nombre;
     }
 
     public String getDescripcion() {
@@ -52,5 +56,11 @@ public class Curso {
 
     public double getDuracion() {
         return duracion;
+    }
+
+    public double getPrecio() {return precio;}
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

@@ -12,25 +12,27 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet("/carro/actualizar")
 public class ActualizarCarroServlet extends HttpServlet {
+    private Logger logger = Logger.getLogger(ActualizarCarroServlet.class.getName());
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         if (session.getAttribute("carro")!=null){
             Carro carro = (Carro) session.getAttribute("carro");
-            updateProductos(req, carro);
+            updateItems(req, carro);
             updateCantidades(req, carro);
         }
         resp.sendRedirect(req.getContextPath() + "/carro/ver");
     }
 
-    private void updateProductos(HttpServletRequest request, Carro carro){
-        String[] deleteIds = request.getParameterValues("deleteProductos");
-        if (deleteIds != null && deleteIds.length >0){
-            List<String> productoIds = Arrays.asList(deleteIds);
-            carro.removeProductos(productoIds);
+    private void updateItems(HttpServletRequest request, Carro carro){
+        String[] deleteItems = request.getParameterValues("deleteItems");
+        if (deleteItems != null && deleteItems.length >0){
+            List<String> itemsNombres = Arrays.asList(deleteItems);
+            carro.removeItems(itemsNombres);
         }
     }
 
@@ -39,12 +41,18 @@ public class ActualizarCarroServlet extends HttpServlet {
         while (enumer.hasMoreElements()) {
             String paramName = enumer.nextElement();
             if (paramName.startsWith("cant_")) {
-                String id = paramName.substring(5);
+                String nombre = paramName.substring(5);
                 String cantidad = request.getParameter(paramName);
                 if (cantidad != null) {
-                    carro.updateCantidad(id, Integer.parseInt(cantidad));
+                    if (Integer.parseInt(cantidad) > 0){
+                        carro.updateCantidad(nombre, Integer.parseInt(cantidad));
+                    }else{
+                        carro.removeItem(nombre);
+                    }
+
                 }
             }
         }
     }
 }
+

@@ -10,15 +10,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
-@WebFilter()
+@WebFilter("/*")
 public class ConexioFilter implements Filter{
+    private static final Logger logger = Logger.getLogger(ConexioFilter.class.getName());
+    public void init(FilterConfig filterConfig) throws ServletException{
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try(Connection conn = ConexionBaseDatos.getInstance()){
-            if (conn.getAutoCommit()){
-                conn.setAutoCommit(false);
-            }
+            conn.setAutoCommit(false);
 
             try{
                 request.setAttribute("conn", conn);
@@ -32,5 +35,9 @@ public class ConexioFilter implements Filter{
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+    }
+
+    public void destroy(){
+
     }
 }

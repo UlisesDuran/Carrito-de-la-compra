@@ -6,8 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
+    private static final Logger logger = Logger.getLogger(ProductoRepositoryJdbcImpl.class.getName());
 
     private Connection conn;
 
@@ -19,9 +21,12 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
     public List<Producto> listar() throws SQLException {
         List<Producto> productos = new ArrayList<>();
 
-        try(Statement stmt= conn.createStatement(); ResultSet rs= stmt.executeQuery("SELECT p.* c.nombre as categoria FROM productos as p " +
-                "inner join categorias as c ON (p.categoria_id) = c.id")){
+        try(Statement stmt= conn.createStatement(); ResultSet rs= stmt.executeQuery("SELECT * FROM productos")){
             while (rs.next()){
+
+                int id = rs.getInt("id"); // Reemplaza "id" con el nombre de la columna correspondiente
+                String nombre = rs.getString("nombre"); // Reemplaza "nombre" con el nombre de la columna correspondiente
+
                 Producto p = getProducto(rs);
                 productos.add(p);
             }
@@ -36,8 +41,7 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
     public Optional<Producto> porId(Long id) throws SQLException {
 
         Optional<Producto> producto = null;
-        try(PreparedStatement stmt= conn.prepareStatement("SELECT p.*, c.nombre as categoria FROM productos as p "
-                + "inner join categorias as c ON (p.categoria_id = c.id) WHERE p.id=?")) {
+        try(PreparedStatement stmt= conn.prepareStatement("SELECT * FROM productos WHERE id=?;")) {
             stmt.setLong(1, id);
             try(ResultSet rs = stmt.executeQuery()){
                 if (rs.next()){
@@ -62,8 +66,8 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
         Producto p = new Producto();
         p.setId(rs.getLong("id"));
         p.setNombre(rs.getString("nombre"));
-        p.setPrecio(rs.getInt("precio"));
-        p.setTipo(rs.getString("categoria"));
+        p.setTipo(rs.getString("tipo"));
+        p.setPrecio(rs.getDouble("precio"));
         return p;
     }
 }
