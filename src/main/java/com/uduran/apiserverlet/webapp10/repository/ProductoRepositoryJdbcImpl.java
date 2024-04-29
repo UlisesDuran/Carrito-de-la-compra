@@ -1,5 +1,6 @@
 package com.uduran.apiserverlet.webapp10.repository;
 
+import com.uduran.apiserverlet.webapp10.models.Categoria;
 import com.uduran.apiserverlet.webapp10.models.Producto;
 
 import java.sql.*;
@@ -23,10 +24,6 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
 
         try(Statement stmt= conn.createStatement(); ResultSet rs= stmt.executeQuery("SELECT * FROM productos")){
             while (rs.next()){
-
-                int id = rs.getInt("id"); // Reemplaza "id" con el nombre de la columna correspondiente
-                String nombre = rs.getString("nombre"); // Reemplaza "nombre" con el nombre de la columna correspondiente
-
                 Producto p = getProducto(rs);
                 productos.add(p);
             }
@@ -41,7 +38,7 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
     public Optional<Producto> porId(Long id) throws SQLException {
 
         Optional<Producto> producto = null;
-        try(PreparedStatement stmt= conn.prepareStatement("SELECT * FROM productos WHERE id=?;")) {
+        try(PreparedStatement stmt= conn.prepareStatement("")) {
             stmt.setLong(1, id);
             try(ResultSet rs = stmt.executeQuery()){
                 if (rs.next()){
@@ -66,7 +63,7 @@ public class ProductoRepositoryJdbcImpl implements Repository<Producto>{
         Producto p = new Producto();
         p.setId(rs.getLong("id"));
         p.setNombre(rs.getString("nombre"));
-        p.setTipo(rs.getString("tipo"));
+        p.setCategoria(rs.getString("categoriaID"));
         p.setPrecio(rs.getDouble("precio"));
         return p;
     }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class ConexionBaseDatos {
-    private static String url = "jdbc:sqlite://C:/Users/UlisesDurán/IdeaProjects/HelloWorld/webapp-10/webapp10/basedatos/carrocompra.db";
+    private static String url = "jdbc:sqlite://C:/Users/UlisesDurán/IdeaProjects/HelloWorld/webapp11/webapp11/basedatos/carrocompra.db";
 
     private static Connection conn;
 

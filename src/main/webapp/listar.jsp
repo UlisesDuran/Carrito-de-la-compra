@@ -36,7 +36,7 @@
                     <tr>
                         <td><%=p.getId()%></td>
                         <td><%=p.getNombre()%></td>
-                        <td><%=p.getTipo()%></td>
+                        <td><%=p.getCategoria().getNombre()%></td>
                         <% if (username.isPresent()) {%>
                         <td><%=p.getPrecio()%></td>
                         <td>

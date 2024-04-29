@@ -1,19 +1,49 @@
 package com.uduran.apiserverlet.webapp10.models;
 
+import java.time.LocalDate;
+
 public class Producto {
     private Long id;
     private String nombre;
-    private String tipo;
+    private Categoria categoria;
     private Double precio;
+    private String sku;
+    private LocalDate fechaRegistro;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String tipo, Double precio) {
+    public Producto(Long id, String nombre, String categoria, Double precio) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
         this.precio = precio;
+        this.categoria = new Categoria();
+        this.categoria.setNombre(categoria);
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String nombre) {
+        this.categoria = new Categoria();
+        this.categoria.setNombre(nombre);
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public Long getId() {
@@ -22,10 +52,6 @@ public class Producto {
 
     public String getNombre() {
         return nombre;
-    }
-
-    public String getTipo() {
-        return tipo;
     }
 
     public Double getPrecio() {
@@ -40,9 +66,6 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public void setPrecio(Double precio) {
         this.precio = precio;
@@ -52,7 +75,7 @@ public class Producto {
     public String toString() {
         return "Producto{" +
                 "nombre='" + nombre + '\'' +
-                ", tipo='" + tipo + '\'' +
+                ", categoría'" + categoria.getNombre() + '\'' +
                 ", precio=" + precio +
                 '}';
     }
