@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @WebServlet("/carro/agregar")
 public class AgregarCarroServlet extends HttpServlet{
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -40,7 +41,6 @@ public class AgregarCarroServlet extends HttpServlet{
             Producto productoItem = gson.fromJson(itemElement, Producto.class);
             ItemService<Producto> productoService = new ProductoServiceJdbcImpl(conn);
             Optional<Producto> producto = productoService.porId(productoItem.getId());
-
             if (producto.isPresent()){
                 ItemCarro item = new ItemCarro(1, producto.get());
                 HttpSession session = req.getSession();

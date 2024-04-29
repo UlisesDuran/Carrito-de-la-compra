@@ -1,5 +1,8 @@
 package com.uduran.apiserverlet.webapp10.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Curso {
     private Long id;
     private String nombre;
@@ -7,6 +10,9 @@ public class Curso {
     private String instructor;
     private double duracion;
     private double precio;
+    private Categoria categoria;
+    private String sku;
+    private String fechaRegistro;
 
     public Curso() {
     }
@@ -38,6 +44,24 @@ public class Curso {
         this.duracion = duracion;
     }
 
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public void setCategoria(String nombre) {
+        this.categoria = new Categoria();
+        this.categoria.setNombre(nombre);
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.fechaRegistro = formatter.format(fechaRegistro);
+    }
+
     public Long getId() {
         return id;
     }
@@ -60,7 +84,15 @@ public class Curso {
 
     public double getPrecio() {return precio;}
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public String getFechaRegistro() {
+        return fechaRegistro;
     }
 }
