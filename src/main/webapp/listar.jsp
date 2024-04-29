@@ -77,6 +77,7 @@
                         <td><%=c.getDescripcion()%></td>
                         <td><%=c.getInstructor()%></td>
                         <td><%=c.getDuracion()%></td>
+                        <td><%=c.getCategoria().getNombre()%></td>
                         <% if (username.isPresent()) {%>
                         <td><%=c.getPrecio()%></td>
                         <td>

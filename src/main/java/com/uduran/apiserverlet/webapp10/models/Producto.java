@@ -1,6 +1,7 @@
 package com.uduran.apiserverlet.webapp10.models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Producto {
     private Long id;
@@ -8,7 +9,7 @@ public class Producto {
     private Categoria categoria;
     private Double precio;
     private String sku;
-    private LocalDate fechaRegistro;
+    private String fechaRegistro;
 
     public Producto() {
     }
@@ -38,12 +39,13 @@ public class Producto {
         this.sku = sku;
     }
 
-    public LocalDate getFechaRegistro() {
+    public String getFechaRegistro() {
         return fechaRegistro;
     }
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.fechaRegistro = formatter.format(fechaRegistro);
     }
 
     public Long getId() {
@@ -71,12 +73,4 @@ public class Producto {
         this.precio = precio;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "nombre='" + nombre + '\'' +
-                ", categoría'" + categoria.getNombre() + '\'' +
-                ", precio=" + precio +
-                '}';
-    }
 }
