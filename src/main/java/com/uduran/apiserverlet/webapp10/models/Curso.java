@@ -48,9 +48,8 @@ public class Curso {
         this.precio = precio;
     }
 
-    public void setCategoria(String nombre) {
-        this.categoria = new Categoria();
-        this.categoria.setNombre(nombre);
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public void setSku(String sku) {
