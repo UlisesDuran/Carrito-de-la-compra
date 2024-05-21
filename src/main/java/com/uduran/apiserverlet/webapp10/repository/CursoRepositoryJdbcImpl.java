@@ -20,7 +20,7 @@ public class CursoRepositoryJdbcImpl implements Repository<Curso>{
     public List<Curso> listar() throws SQLException {
         List<Curso> cursos = new ArrayList<>();
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT cursos.*, categorias.categoria_nombre AS nombre_categoria "
-                + "FROM cursos JOIN categorias ON cursos.categoria_id = categorias.categoria_id;")){
+                + "FROM cursos JOIN categorias ON cursos.categoria_id = categorias.categoria_id ORDER BY cursos.id ASC;")){
             while (rs.next()){
                 Curso c = getCurso(rs);
                 cursos.add(c);
@@ -101,7 +101,7 @@ public class CursoRepositoryJdbcImpl implements Repository<Curso>{
         c.setDuracion(rs.getDouble("duracion"));
         c.setPrecio(rs.getDouble("precio"));
         Categoria categoria = new Categoria();
-        categoria.setId(rs.getLong("categoriaId"));
+        categoria.setId(rs.getLong("categoria_id"));
         categoria.setNombre((rs.getString("nombre_categoria")));
         c.setCategoria(categoria);
         return c;

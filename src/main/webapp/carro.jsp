@@ -66,7 +66,8 @@
     <a href="javascript:document.formcarro.submit();">Actualizar</a>
 </form>
 <%}%>
-<p><a href="<%=request.getContextPath()%>/comprar">seguir comprando</a></p>
-<p><a href="<%=request.getContextPath()%>/index.html">volver</a></p>
+<p><a href="<%=request.getContextPath()%>/comprar/productos">seguir comprando productos</a></p>
+<p><a href="<%=request.getContextPath()%>/comprar/cursos">seguir comprando cursos</a></p>
+<p><a href="<%=request.getContextPath()%>/index.jsp">Inicio</a></p>
 </body>
 </html>

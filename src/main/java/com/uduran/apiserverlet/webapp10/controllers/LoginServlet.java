@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
         Optional<String> usernameOptional = auth.getUsername(req);
 
         if (usernameOptional.isPresent()) {
-            getServletContext().getRequestDispatcher("/carrito-compra.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         } else {
             getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
         }
