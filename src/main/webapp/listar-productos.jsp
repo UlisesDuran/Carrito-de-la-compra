@@ -6,8 +6,8 @@
 <%@ page import="com.google.gson.JsonObject" %>
 <%
     List<Producto> productos = (List<Producto>) request.getAttribute("productos");
-    List<Curso> cursos = (List<Curso>) request.getAttribute("cursos");
     Optional<String> username = (Optional<String>) request.getAttribute("username");
+    List<Categoria> categorias = (List<Categoria>) request.getAttribute("categorias");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +18,22 @@
     <body>
         <h1>Listado de productos</h1>
         <% if (username.isPresent()) {%>
-        <div>Hola, <%=username.get()%>, bienvenido!</div>
+        <div>
+            <h3>Hola, <%=username.get()%>, bienvenido!</h3>
+        </div>
+        <div>
+            <form action="<%=request.getContextPath()%>/item/form/categoria" method="get">
+                <label for="categoria">Seleccione la categoria del producto:</label>
+                <select name="categoria" id="categoria">
+                    <option value="">Seleccione una categoria</option>
+                    <%for (Categoria c: categorias){%>
+                    <option value="<%=c.getId()%>"><%=c.getNombre()%></option>
+                    <%}%>
+                </select>
+                <br/>
+                <input type="submit" value="Crear"/>
+            </form>
+        </div>
         <% } %>
         <div>
             <div>
@@ -30,6 +45,7 @@
                         <% if (username.isPresent()) {%>
                         <th>precio</th>
                         <th>agregar</th>
+                        <th>editar</th>
                         <% } %>
                     </tr>
                     <%for (Producto p : productos) {%>
@@ -51,43 +67,6 @@
                                 <input type="hidden" name="item" value="<%=encodedItemJson%>"/>
                                 <input type="submit" value="Agregar al carro"/>
                             </form>
-                        </td>
-                        <% } %>
-                    </tr>
-                    <%}%>
-                </table>
-            </div>
-            <div>
-                <table>
-                    <tr>
-                        <th>id</th>
-                        <th>nombre</th>
-                        <th>decripcion</th>
-                        <th>intructor</th>
-                        <th>duracion</th>
-                        <% if (username.isPresent()) {%>
-                        <th>precio</th>
-                        <th>agregar</th>
-                        <% } %>
-                    </tr>
-                    <%for (Curso c : cursos) {%>
-                    <tr>
-                        <td><%=c.getId()%></td>
-                        <td><%=c.getNombre()%></td>
-                        <td><%=c.getDescripcion()%></td>
-                        <td><%=c.getInstructor()%></td>
-                        <td><%=c.getDuracion()%></td>
-                        <td><%=c.getCategoria().getNombre()%></td>
-                        <% if (username.isPresent()) {%>
-                        <td><%=c.getPrecio()%></td>
-                        <td>
-                            <%
-                                JsonObject jsonObject = new JsonObject();
-                                jsonObject.addProperty("tipo", c.getClass().getName());
-                                jsonObject.add("item", new Gson().toJsonTree(c));
-                                String itemJson = jsonObject.toString();
-                                String encodedItemJson = URLEncoder.encode(itemJson, StandardCharsets.UTF_8);
-                            %>
                             <form action="<%=request.getContextPath()%>/carro/agregar" method="post">
                                 <input type="hidden" name="item" value="<%=encodedItemJson%>"/>
                                 <input type="submit" value="Agregar al carro"/>
@@ -100,10 +79,17 @@
             </div>
         </div>
         <div>
+            <%if (username.isPresent()){%>
             <button onclick="window.location.href='<%=request.getContextPath()%>/carro/ver'">Carro</button>
+            <%}%>
+
         </div>
         <div>
-            <button onclick="window.location.href='<%=request.getContextPath()%>/index.html'">Volver!</button>
+            <%if (username.isPresent()){%>
+                <button onclick="window.location.href='<%=request.getContextPath()%>/index.jsp'">Inicio</button>
+            <%}else{%>
+                <button onclick="window.location.href='<%=request.getContextPath()%>/index.html'">Inicio</button>
+            <%}%>
         </div>
     </body>
 </html>
